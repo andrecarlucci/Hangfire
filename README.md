@@ -112,6 +112,9 @@ Related Projects
 * [Hangfire.TinyIoC](https://github.com/richclement/HangFire.TinyIoC) by [@richclement](https://github.com/richclement)
 * [Hangfire.Azure.QueueStorage](https://github.com/HangfireIO/Hangfire.Azure.QueueStorage)
 * [Hangfire.Azure.ServiceBusQueue](https://github.com/HangfireIO/Hangfire.Azure.ServiceBusQueue)
+* [Hangfire.Mongo](https://github.com/sergun/Hangfire.Mongo) by [@sergun](https://github.com/sergun)
+* [Hangfire.CompositeC1](https://bitbucket.org/burningice/hangfire.compositec1) by [@burningice](https://bitbucket.org/burningice)
+* [Hangfire.PostgreSql](https://github.com/frankhommers/Hangfire.PostgreSql) by [@frankhommers](https://github.com/frankhommers)
 
 Building the sources
 ---------------------

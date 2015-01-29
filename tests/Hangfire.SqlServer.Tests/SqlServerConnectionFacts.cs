@@ -17,18 +17,22 @@ namespace Hangfire.SqlServer.Tests
     public class SqlStorageConnectionFacts
     {
         private readonly Mock<IPersistentJobQueue> _queue;
-        private readonly Mock<IPersistentJobQueueProvider> _provider;
         private readonly PersistentJobQueueProviderCollection _providers;
 
         public SqlStorageConnectionFacts()
         {
             _queue = new Mock<IPersistentJobQueue>();
 
+<<<<<<< HEAD
             _provider = new Mock<IPersistentJobQueueProvider>();
             _provider.Setup(x => x.GetJobQueue())
+=======
+            var provider = new Mock<IPersistentJobQueueProvider>();
+            provider.Setup(x => x.GetJobQueue(It.IsNotNull<IDbConnection>()))
+>>>>>>> 14ec9ea243d45564edb031ff2b9d159324cabe09
                 .Returns(_queue.Object);
 
-            _providers = new PersistentJobQueueProviderCollection(_provider.Object);
+            _providers = new PersistentJobQueueProviderCollection(provider.Object);
         }
 
         [Fact]
@@ -278,7 +282,46 @@ select @JobId as Id;";
             });
         }
 
+<<<<<<< HEAD
         [Fact, CleanDatabase("HangFire.Job")]
+=======
+        [Fact, CleanDatabase]
+        public void GetStateData_ReturnsCorrectData_WhenPropertiesAreCamelcased()
+        {
+            const string arrangeSql = @"
+insert into HangFire.Job (InvocationData, Arguments, StateName, CreatedAt)
+values ('', '', '', getutcdate());
+declare @JobId int;
+set @JobId = scope_identity();
+insert into HangFire.State (JobId, Name, CreatedAt)
+values (@JobId, 'old-state', getutcdate());
+insert into HangFire.State (JobId, Name, Reason, Data, CreatedAt)
+values (@JobId, @name, @reason, @data, getutcdate());
+declare @StateId int;
+set @StateId = scope_identity();
+update HangFire.Job set StateId = @StateId;
+select @JobId as Id;";
+
+            UseConnections((sql, connection) =>
+            {
+                var data = new Dictionary<string, string>
+                {
+                    { "key", "Value" }
+                };
+
+                var jobId = (int)sql.Query(
+                    arrangeSql,
+                    new { name = "Name", reason = "Reason", @data = JobHelper.ToJson(data) }).Single().Id;
+
+                var result = connection.GetStateData(jobId.ToString());
+                Assert.NotNull(result);
+
+                Assert.Equal("Value", result.Data["Key"]);
+            });
+        }
+
+        [Fact, CleanDatabase]
+>>>>>>> 14ec9ea243d45564edb031ff2b9d159324cabe09
         public void GetJobData_ReturnsJobLoadException_IfThereWasADeserializationException()
         {
             const string arrangeSql = @"

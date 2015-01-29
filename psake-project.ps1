@@ -2,7 +2,7 @@ Properties {
     $solution = "Hangfire.sln"
 }
 
-Include ".\psake-common.ps1"
+Include "packages\Hangfire.Build.0.1.3\tools\psake-common.ps1"
 
 Task Default -Depends Collect
 
@@ -13,6 +13,10 @@ Task Test -Depends Compile -Description "Run unit and integration tests." {
 }
 
 Task Merge -Depends Test -Description "Run ILMerge /internalize to merge assemblies." {
+    # Remove `*.pdb` file to be able to prepare NuGet symbol packages.
+    Remove-Item ((Get-SrcOutputDir "Hangfire.Core") + "\NCrontab.pdb")
+    Remove-Item ((Get-SrcOutputDir "Hangfire.SqlServer") + "\Dapper.pdb")
+
     Merge-Assembly "Hangfire.Core" @("NCrontab", "CronExpressionDescriptor", "Microsoft.Owin")
     Merge-Assembly "Hangfire.SqlServer" @("Dapper")
 }

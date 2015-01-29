@@ -18,18 +18,35 @@
     <tags>Hangfire AspNet OWIN SqlServer Long-Running Background Fire-And-Forget Delayed Recurring Tasks Jobs Scheduler Threading Queues</tags>
     <releaseNotes>https://github.com/HangfireIO/Hangfire/releases
     
+1.3.3
+* Fixed – Enqueued job is not being processed with MSMQ or RabbitMQ.
+    
+1.3.2
+* Fixed – Fatal error occurred during execution of 'Server Core' component.
+* Fixed – Hangfire version freezes at 1.0.0.0 on Dashboard.
+* Fixed – Recurring job does not trigger.
+* Fixed – Sql Timeouts in ExpirationManager.
+* Fixed – KeyNotFoundException on /hangfire/succeeded page.
+    
+1.3.1
+* Fixed – Worker stops processing on storage exceptions.
+    
 1.3.0
-* Breaking – Use `LibLog` package instead of `Common.Logging` for logging.
 * Added – Generation of NuGet symbol packages with `*.pdb` and source files.
+* Added – Allow to customize serialization settings of Json.NET (by @fpellet).
+* Added – Ability to configure `ServerTimeout` option.
+* Breaking – Use `LibLog` package instead of `Common.Logging` for logging.
 * Changed – `Hangfire.SqlServer` is now merged with `Dapper` package.
 * Changed – `Dapper` package updated to 1.38.
 * Changed – Use ILMerge instead of ILRepack (found there is a NuGet package for it).
+* Changed – Update `Microsoft.Owin.Host.SystemWeb` to the latest version.
+* Fixed – Dashboard not crash if a scheduling task is cancelled (@fpellet).
 * Other – Use psake instead of MSBuild for project build automation.
     </releaseNotes>
     <dependencies>
       <dependency id="Hangfire.Core" version="[0.0.0]" />
       <dependency id="Hangfire.SqlServer" version="[0.0.0]" />
-      <dependency id="Microsoft.Owin.Host.SystemWeb" version="2.1.0" />
+      <dependency id="Microsoft.Owin.Host.SystemWeb" version="3.0.0" />
     </dependencies>
   </metadata>
   <files>

@@ -119,7 +119,7 @@ namespace Hangfire
                 _storage, 
                 new Lazy<IServerSupervisor>(GetSupervisors));
 
-            return new ServerSupervisor(
+            return CreateSupervisor(
                 bootstrapper, 
                 new ServerSupervisorOptions
                 {
@@ -150,8 +150,8 @@ namespace Hangfire
 
             yield return new WorkerManager(sharedWorkerContext, _options.WorkerCount);
             yield return new ServerHeartbeat(_storage, _serverId);
-            yield return new ServerWatchdog(_storage);
             yield return new SchedulePoller(_storage, stateMachineFactory, _options.SchedulePollingInterval);
+            yield return new ServerWatchdog(_storage, _options.ServerWatchdogOptions);
 
             yield return new RecurringJobScheduler(
                 _storage, 
@@ -162,7 +162,12 @@ namespace Hangfire
 
         private static ServerSupervisor CreateSupervisor(IServerComponent component)
         {
-            return new ServerSupervisor(new AutomaticRetryServerComponentWrapper(component));
+            return CreateSupervisor(component, new ServerSupervisorOptions());
+        }
+
+        private static ServerSupervisor CreateSupervisor(IServerComponent component, ServerSupervisorOptions options)
+        {
+            return new ServerSupervisor(new AutomaticRetryServerComponentWrapper(component), options);
         }
     }
 }
