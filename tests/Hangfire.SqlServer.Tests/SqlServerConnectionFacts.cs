@@ -22,16 +22,9 @@ namespace Hangfire.SqlServer.Tests
         public SqlStorageConnectionFacts()
         {
             _queue = new Mock<IPersistentJobQueue>();
-
-<<<<<<< HEAD
-            _provider = new Mock<IPersistentJobQueueProvider>();
-            _provider.Setup(x => x.GetJobQueue())
-=======
             var provider = new Mock<IPersistentJobQueueProvider>();
-            provider.Setup(x => x.GetJobQueue(It.IsNotNull<IDbConnection>()))
->>>>>>> 14ec9ea243d45564edb031ff2b9d159324cabe09
-                .Returns(_queue.Object);
-
+            provider.Setup(x => x.GetJobQueue())
+                    .Returns(_queue.Object);
             _providers = new PersistentJobQueueProviderCollection(provider.Object);
         }
 
@@ -282,10 +275,7 @@ select @JobId as Id;";
             });
         }
 
-<<<<<<< HEAD
         [Fact, CleanDatabase("HangFire.Job")]
-=======
-        [Fact, CleanDatabase]
         public void GetStateData_ReturnsCorrectData_WhenPropertiesAreCamelcased()
         {
             const string arrangeSql = @"
@@ -321,7 +311,6 @@ select @JobId as Id;";
         }
 
         [Fact, CleanDatabase]
->>>>>>> 14ec9ea243d45564edb031ff2b9d159324cabe09
         public void GetJobData_ReturnsJobLoadException_IfThereWasADeserializationException()
         {
             const string arrangeSql = @"

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using Dapper;
@@ -11,16 +12,10 @@ namespace Hangfire.SqlServer.Tests {
         private readonly SqlServerStorage _storage;
         private readonly CancellationToken _token;
 
-<<<<<<< HEAD
         public ExpirationManagerFacts() {
             _storage = new SqlServerStorage(ConnectionUtils.GetConnectionString());
-            _token = new CancellationToken(true);
-=======
-        public ExpirationManagerFacts()
-        {
             var cts = new CancellationTokenSource();
             _token = cts.Token;
->>>>>>> 14ec9ea243d45564edb031ff2b9d159324cabe09
         }
 
         [Fact]
@@ -171,20 +166,14 @@ select scope_identity() as Id";
             return count == 0;
         }
 
-<<<<<<< HEAD
-        private ExpirationManager CreateManager() {
-            return new ExpirationManager(_storage);
-=======
         private SqlConnection CreateConnection()
         {
             return ConnectionUtils.CreateConnection();
         }
 
-        private ExpirationManager CreateManager(SqlConnection connection)
+        private ExpirationManager CreateManager()
         {
-            var storage = new SqlServerStorage(connection);
-            return new ExpirationManager(storage, TimeSpan.Zero);
->>>>>>> 14ec9ea243d45564edb031ff2b9d159324cabe09
+            return new ExpirationManager(_storage, TimeSpan.Zero);
         }
     }
 }
